@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4 text-center fw-bold display-6">Your Analysis Logs</h2>
+
+<div class="table-responsive">
+  <table class="table align-middle table-bordered table-hover">
+    <thead class="table-primary text-center">
+      <tr>
+        <th scope="col">Time</th>
+        <th scope="col">Filename</th>
+        <th scope="col">Risk Score</th>
+        <th scope="col">Highlights</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td class="text-nowrap">{{ log.upload_time }}</td>
+        <td class="text-truncate" style="max-width: 150px;">{{ log.filename }}</td>
+        <td>
+          <span class="badge bg-{{ 'danger' if log.risk_score > 70 else 'warning' if log.risk_score > 40 else 'success' }}">
+            {{ log.risk_score }}%
+          </span>
+        </td>
+        <td>
+          <details>
+            <summary class="text-primary">View Highlights</summary>
+            <div class="mt-2">
+              {% for line in log.highlights.split('\n') %}
+                <div class="text-muted small">{{ line }}</div>
+              {% endfor %}
+            </div>
+          </details>
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('delete_log', log_id=log.id) }}">
+            {{ form.hidden_tag() }}
+            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this log? This cannot be undone.');">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>          
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

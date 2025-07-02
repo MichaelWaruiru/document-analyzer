@@ -1,0 +1,12 @@
+Flask
+Flask-Login
+Flask-WTF
+Flask-MySQLdb
+Flask-SQLAlchemy
+Werkzeug
+python-dotenv
+spacy
+scikit-learn
+pandas
+nltk
+email_validator

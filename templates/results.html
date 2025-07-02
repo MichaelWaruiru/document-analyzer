@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Analysis Results for {{ filename }}</h2>
+<div class="card shadow">
+  <div class="card-body">
+    <h5>Risk Score: <span class="badge bg-danger">{{ summary['risk_score'] }}%</span></h5>
+    <h6 class="mt-3">Found Clauses:</h6>
+    <ul>
+      {% for clause in summary['found_clauses'] %}
+        <li>{{ clause }}</li>
+      {% endfor %}
+    </ul>
+    <h6 class="mt-3">Missing Clauses:</h6>
+    <ul>
+      {% for clause in summary['missing_clauses'] %}
+        <li class="text-danger">{{ clause }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Analyze Another Contract</a>
+{% endblock %}

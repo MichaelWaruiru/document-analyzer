@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow">
+  <div class="card-body">
+    <h1 class="card-title mb-4">Automated Documents Analyzer</h1>
+    {% if current_user.is_authenticated %}
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="document" class="form-label">Upload Document (.txt, .pdf, .docx):</label>
+          <input class="form-control" type="file" id="document" name="document" accept=".txt,.pdf,.docx" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Analyze</button>
+      </form>
+      <div id="analysisResult" class="mt-4"></div>
+    {% else %}
+      <p>Please <a href="{{ url_for('login') }}">login</a> to use the document analyzer.</p>
+    {% endif %}
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
