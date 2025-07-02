@@ -1,21 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card shadow">
-  <div class="card-body">
-    <h1 class="card-title mb-4">Automated Documents Analyzer</h1>
-    {% if current_user.is_authenticated %}
-      <form id="uploadForm" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label for="document" class="form-label">Upload Document (.txt, .pdf, .docx):</label>
-          <input class="form-control" type="file" id="document" name="document" accept=".txt,.pdf,.docx" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Analyze</button>
-      </form>
-      <div id="analysisResult" class="mt-4"></div>
-    {% else %}
-      <p>Please <a href="{{ url_for('login') }}">login</a> to use the document analyzer.</p>
-    {% endif %}
+<div class="bg-overlay">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg animated fadeInUp" style="max-width: 480px; width: 100%; border-radius: 1.5rem;">
+      <div class="card-body p-5">
+        <h1 class="card-title mb-4 text-center title-glow">Automated Documents Analyzer</h1>
+        <p class="text-center text-muted mb-4" style="font-size: 1.1rem;">
+          Instantly scan your contracts for risky clauses.<br>
+          <span class="badge bg-info text-dark animate__animated animate__pulse animate__infinite">AI Powered</span>
+        </p>
+        {% if current_user.is_authenticated %}
+          <form id="uploadForm" enctype="multipart/form-data" class="animated fadeIn">
+            <div class="mb-3">
+              <label for="document" class="form-label">Upload Document (.txt, .pdf, .docx):</label>
+              <input class="form-control file-input" type="file" id="document" name="document" accept=".txt,.pdf,.docx" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 shadow-sm animate__animated animate__bounceIn">Analyze</button>
+          </form>
+          <div id="analysisResult" class="mt-4"></div>
+        {% else %}
+          <div class="text-center">
+            <p class="mb-3">Please <a href="{{ url_for('login') }}"><span class="fw-bold text-primary animate__animated animate__flash animate__infinite">login</span></a> to use the document analyzer.</p>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGF6N2d0b3FwdnF6dXl3bTQ2eWx2YXo0NW1ndGZ1a2t6ZGx2YjJ1eCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nGMn0VOLd6F1C/giphy.gif"
+                 alt="AI Scanner" style="width: 80px; display: block; margin: 0 auto 1.5rem;">
+          </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </div>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
