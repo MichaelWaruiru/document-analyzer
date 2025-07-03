@@ -1,6 +1,6 @@
 import spacy
 
-# Load spaCy legal model
+# Load spaCy large or small English legal model
 try:
   nlp = spacy.load("en_core_web_lg")
 except:
