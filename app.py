@@ -9,16 +9,31 @@ import os
 from models.models import User, db, AnalysisLog
 from ml.analyzer import analyze_document
 from config import Config
+from flask_dance.contrib.google import make_google_blueprint, google
+from sqlalchemy.exc import IntegrityError
 
 UPLOAD_EXTENSIONS = ['.txt', '.pdf', '.docx']
 UPLOAD_PATH = 'static/uploads'
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.app_context().push()
 db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+google_bp = make_google_blueprint(
+  client_id=app.config["GOOGLE_OAUTH_CLIENT_ID"],
+  client_secret=app.config["GOOGLE_OAUTH_CLIENT_SECRET"],
+  redirect_to="google_login_callback",
+  scope=[
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "openid"
+  ]
+)
+app.register_blueprint(google_bp, url_prefix="/login")
 
 """Forms"""
 class LoginForm(FlaskForm):
@@ -37,8 +52,8 @@ class DeleteForm(FlaskForm):
 # Creates all tables in mysql
 @app.cli.command("init-db")
 def init_db():
-    db.create_all()
-    print("Database tables created!")
+  db.create_all()
+  print("Database tables created!")
   
 @login_manager.user_loader
 def load_user(user_id):
@@ -82,9 +97,70 @@ def login():
     print("Login form errors:", form.errors)
   return render_template("login.html", form=form)
 
+@app.route("/login/google")
+def login_google():
+  if not google.authorized:
+    flash("Google login failed.", "danger")
+    return redirect(url_for("login"))
+  
+  resp = google.get("/oauth2/v2/userinfo")
+  if not resp.ok:
+    flash("Failed to fetch user info from Google.", "danger")
+    return redirect(url_for("login"))
+
+  info = resp.json()
+  email = info.get("email").strip().lower()
+  username = info.get("name") or email.split("@")[0]
+
+  user = User.query.filter_by(email=email).first()
+  if not user:
+    user = User(
+      username=username,
+      email=email,
+      password=generate_password_hash(os.urandom(16).hex())  # Random password since they use Google
+    )
+    db.session.add(user)
+    db.session.commit()
+
+  login_user(user)
+  flash("Logged in successfully with Google!", "success")
+  return redirect(url_for("dashboard"))
+  
+@app.route("/google_login_callback")
+def google_login_callback():
+  # This route is called ONLY AFTER /login/google/authorized (OAuth callback).
+  # The user is authenticated at this point.
+  resp = google.get("/oauth2/v2/userinfo")
+  if not resp.ok:
+    flash("Failed to fetch user info from Google.", "danger")
+    return redirect(url_for("login"))
+
+  info = resp.json()
+  email = info.get("email").strip().lower()
+  username = info.get("name") or email.split("@")[0]
+
+  user = User.query.filter_by(email=email).first()
+  if not user:
+    user = User(
+      username=username,
+      email=email,
+      password=generate_password_hash(os.urandom(16).hex())
+    )
+    db.session.add(user)
+    db.session.commit()
+
+  login_user(user)
+  flash("Logged in successfully with Google!", "success")
+  return redirect(url_for("index"))
+  
 @app.route("/logout")
 @login_required
 def logout():
+  # Remove token from Flask-Dance storage
+  if google.authorized:
+    token_storage = google_bp.token
+    if token_storage:
+      del google_bp.token
   logout_user()
   return redirect(url_for("index"))
 
