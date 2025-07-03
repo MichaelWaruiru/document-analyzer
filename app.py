@@ -75,7 +75,7 @@ def login():
     user = User.query.filter_by(email=email).first()
     if user and check_password_hash(user.password, form.password.data):
       login_user(user)
-      return redirect(url_for("dashboard"))
+      return redirect(url_for("index"))
     flash("Invalid credentials. Check email and password.")
   elif request.method == "POST":
     flash("Form validation failed. Please try again.")
@@ -126,6 +126,7 @@ def analyze():
   # db.session.add(log)
   # db.session.commit()
   # return jsonify(result)
+  
   # Only save log if the user is authenticated (logged in)
   if hasattr(current_user, "is_authenticated") and current_user.is_authenticated:
       log = AnalysisLog(
