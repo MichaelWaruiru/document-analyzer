@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
-from wtforms.validators import InputRequired, Email, Length
+from wtforms.validators import InputRequired, Email, Length, EqualTo
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
@@ -29,6 +29,7 @@ class RegisterForm(FlaskForm):
   username = StringField("Username", validators=[InputRequired(), Length(min=4, max=100)])
   email = StringField("Email", filters=[lambda x: x.strip() if x else x], validators=[InputRequired(), Email(check_deliverability=False)])
   password = PasswordField("Password", validators=[InputRequired(), Length(min=6)])
+  confirm_password = PasswordField("Confirm Password", validators=[InputRequired(), EqualTo("password", message="Passwords must match")])
   
 class DeleteForm(FlaskForm):
   pass
