@@ -1,16 +1,29 @@
 import spacy
-
-# Load spaCy large or small English legal model
-try:
-  nlp = spacy.load("en_core_web_lg")
-except:
-  nlp = spacy.load("en_core_web_sm")
+from spacy.util import is_package
+from spacy.cli import download
   
 # Risky phrases/clauses
 RISKY_PHRASES = [
   "indemnify", "hold harmless", "liquidated damages", "termination", "arbitration", "non-disclosure",
   "penalty", "unilateral", "binding", "force majeure", "warranty", "liability", "exclusive", "governing law"
 ]
+
+def ensure_model(model_name):
+  if not is_package(model_name):
+    try:
+      download(model_name)
+    except Exception as e:
+      print(f"Failed to download {model_name}: {e}")
+      
+# Load spaCy large or small English legal model
+try:
+  model = "en_core_web_lg"
+  ensure_model(model)
+  nlp = spacy.load(model)
+except:
+  model = "en_core_web_sm"
+  ensure_model(model)
+  nlp = spacy.load(model)
 
 def analyze_document(text):
   doc = nlp(text)
