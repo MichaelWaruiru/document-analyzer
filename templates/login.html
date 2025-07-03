@@ -16,9 +16,14 @@
           <label class="form-label">Email</label>
           {{ form.email(class="form-control", placeholder="your@email.com") }}
         </div>
-        <div class="mb-3">
+        <div class="mb-3 position-relative">
           <label class="form-label">Password</label>
-          {{ form.password(class="form-control", placeholder="Your password") }}
+          <div class="input-group">
+            {{ form.password(class="form-control", placeholder="Your password", id="login_password") }}
+            <span class="input-group-text" style="cursor:pointer" onclick="togglePassword('login_password', this)">
+              <i class="fa fa-eye"></i>
+            </span>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary w-100 shadow-sm animate__animated animate__pulse">Login</button>
       </form>
