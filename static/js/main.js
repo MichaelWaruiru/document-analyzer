@@ -69,6 +69,30 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Highlight Modal handling for dashboard.html
+    var highlightModal = document.getElementById('highlightModal');
+    if (highlightModal) {
+        highlightModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var highlights = button.getAttribute('data-highlights') || '';
+            var filename = button.getAttribute('data-filename') || '';
+            var modalHighlights = highlightModal.querySelector('#modalHighlights');
+            var modalFilename = highlightModal.querySelector('#modalFilename');
+            modalFilename.textContent = filename;
+
+            // Convert HTML entity for line break (&#10;) back to real \n
+            highlights = highlights.replace(/&#10;/g, '\n');
+            var lines = highlights.split('\n').filter(line => line.trim() !== "");
+            if (lines.length) {
+                modalHighlights.innerHTML = '<ul>' + lines.map(function(line) {
+                    return '<li class="text-muted small">' + line + '</li>';
+                }).join('') + '</ul>';
+            } else {
+                modalHighlights.innerHTML = "<span class='text-muted small'>No highlights available.</span>";
+            }
+        });
+    }
 });
 
 // Password visibility toggle function (global, so can be called from inline HTML)
