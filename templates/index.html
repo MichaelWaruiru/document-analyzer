@@ -9,33 +9,30 @@
         Instantly scan your documents for risky clauses.<br>
         <span class="badge bg-info text-dark animate__animated animate__pulse animate__infinite">AI Powered</span>
       </p>
-      {% if current_user.is_authenticated %}
-        <form id="uploadForm" enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="document" class="form-label">Upload Document (.txt, .pdf, .docx):</label>
-            <input class="form-control file-input" type="file" id="document" name="document" accept=".txt,.pdf,.docx" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100 shadow-sm animate__animated animate__bounceIn">Analyze</button>
-        </form>
-
-        <!-- Progress bar container -->
-        <div id="progressContainer" class="mt-4" style="display:none;">
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="document" class="form-label">Upload Document (.txt, .pdf, .docx):</label>
+          <input class="form-control file-input" type="file" id="document" name="document" accept=".txt,.pdf,.docx" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 shadow-sm animate__animated animate__bounceIn">Analyze</button>
+      </form>
+      <!-- Progress bar container -->
+      <div id="progressContainer" class="mt-4" style="display:none;">
         <div class="progress">
           <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info"
                 role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
             0%
           </div>
         </div>
-
-        </div>
-        <div id="analysisResult" class="mt-4"></div>
-      {% else %}
-        <div class="text-center">
-          <p class="mb-3">
-            Please <a href="{{ url_for('login') }}" class="fw-bold text-primary animate__animated animate__flash animate__infinite">login</a> to use the document analyzer.
+      </div>
+      <div id="analysisResult" class="mt-4"></div>
+      {% if not current_user.is_authenticated %}
+        <div class="text-center mt-4">
+          <p>
+            Want to save your analysis and view your dashboard?<br>
+            <a href="{{ url_for('login') }}" class="fw-bold text-primary">Login</a> or
+            <a href="{{ url_for('register') }}" class="fw-bold text-primary">Register</a>
           </p>
-          <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGF6N2d0b3FwdnF6dXl3bTQ2eWx2YXo0NW1ndGZ1a2t6ZGx2YjJ1eCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nGMn0VOLd6F1C/giphy.gif"
-               alt="AI Scanner" style="width: 80px; display: block; margin: 0 auto 1.5rem;">
         </div>
       {% endif %}
     </div>

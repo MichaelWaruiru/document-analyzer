@@ -95,7 +95,7 @@ def dashboard():
   return render_template("dashboard.html", logs=logs, form=form)
 
 @app.route("/analyze", methods=["POST"])
-@login_required
+# @login_required
 def analyze():
   uploaded_file = request.files["document"]
   filename = secure_filename(uploaded_file.filename)
@@ -121,9 +121,21 @@ def analyze():
     return jsonify({"error": "Unsupported file type"}), 400
   
   result = analyze_document(text)
-  log = AnalysisLog(user_id=current_user.id, filename=filename, risk_score=result["risk_score"], highlights="\n".join(result["highlights"]))
-  db.session.add(log)
-  db.session.commit()
+  # log = AnalysisLog(user_id=current_user.id, filename=filename, risk_score=result["risk_score"], highlights="\n".join(result["highlights"]))
+  # db.session.add(log)
+  # db.session.commit()
+  # return jsonify(result)
+  # Only save log if the user is authenticated (logged in)
+  if hasattr(current_user, "is_authenticated") and current_user.is_authenticated:
+      log = AnalysisLog(
+          user_id=current_user.id,
+          filename=filename,
+          risk_score=result["risk_score"],
+          highlights="\n".join(result["highlights"])
+      )
+      db.session.add(log)
+      db.session.commit()
+  # For anonymous users, just return the result (don't try to access current_user.id)
   return jsonify(result)
 
 @app.route("/delete-log/<int:log_id>", methods=["POST"])
