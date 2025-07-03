@@ -16,7 +16,7 @@ Document Analyzer is a Flask-based web application that allows users to upload l
 
 1. **User Registration & Login**
 
-   - Users register with a username, email, and password.
+   - Users register with a username, email, and password or they can login directly using their Google Account.
    - Passwords are securely hashed before storage.
    - Users must be logged in to upload and analyze documents.
 
@@ -24,7 +24,7 @@ Document Analyzer is a Flask-based web application that allows users to upload l
 
    - Supported formats: `.txt`, `.pdf`, `.docx`.
    - Uploaded files are parsed and their text extracted.
-   - The text is analyzed using NLP (spaCy, NLTK, scikit-learn) to detect risky phrases.
+   - The text is analyzed using NLP (spaCy) to detect risky phrases.
    - Each risky sentence found increases the document's risk score.
    - The risk score is normalized (0-100%).
    - Results are shown instantly and saved to the user's dashboard.
@@ -34,9 +34,6 @@ Document Analyzer is a Flask-based web application that allows users to upload l
    - Users can see a table of their previous analyses, including file name, upload time, risk score, and highlights.
    - Users can delete their history entries.
 
-4. **Admin Panel**
-
-   - Admins can view all users and all analyses across the application.
 
 ## Example
 
@@ -49,7 +46,7 @@ Document Analyzer is a Flask-based web application that allows users to upload l
 
 - **Backend:** Python, Flask, Flask-Login, Flask-WTF, Flask-SQLAlchemy, Flask-MySQLdb
 - **Frontend:** HTML (Jinja2 templates), Bootstrap 5, JavaScript
-- **Machine Learning/NLP:** spaCy, NLTK
+- **Machine Learning/NLP:** spaCy 
 - **Database:** MySQL (via SQLAlchemy ORM)
 - **PDF/Docx Parsing:** PyPDF2, python-docx
 - **Dotenv** for environment management
@@ -120,11 +117,12 @@ Document Analyzer is a Flask-based web application that allows users to upload l
 
 ## Usage
 
-- Register a new account.
-- Log in.
-- Upload your document for analysis.
-- View your results and analysis history on your dashboard.
-- Admin users can visit `/admin` to see all users and analyses.
+- You can quickly upload a document for analysis without registering an account. If not you can do the following:
+
+   - Register a new account.
+   - Log in.
+   - Upload your document for analysis.
+   - View your results and analysis history on your dashboard.
 
 ## Security & Privacy
 
