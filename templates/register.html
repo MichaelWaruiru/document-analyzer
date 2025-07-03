@@ -1,24 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card shadow-sm mx-auto" style="max-width: 400px;">
-  <div class="card-body">
-    <h2 class="card-title mb-4">Register</h2>
-    <form method="POST">
-      {{ form.hidden_tag() }}
-      <div class="mb-3">
-        <label class="form-label">Username</label>
-        {{ form.username(class="form-control") }}
+<div class="bg-overlay"></div>
+<div class="container d-flex justify-content-center align-items-center min-vh-100" style="position:relative;z-index:2;">
+  <div class="card shadow-lg animated fadeInUp" style="max-width: 420px; width: 100%; border-radius: 1.5rem;">
+    <div class="card-body p-5">
+      <h2 class="card-title mb-4 text-center title-glow animate__animated animate__pulse animate__infinite" style="font-weight: bold;">
+        Create Your Account
+      </h2>
+      <p class="text-center text-muted mb-4 animate__animated animate__fadeInDown" style="font-size: 1.05rem;">
+        Register to save and access your analysis dashboard anytime.
+      </p>
+      <form method="POST" autocomplete="off" class="animate__animated animate__fadeIn">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          {{ form.username(class="form-control", placeholder="Choose a username (min 4 chars)") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          {{ form.email(class="form-control", placeholder="your@email.com") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          {{ form.password(class="form-control", placeholder="Create a strong password") }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100 shadow-sm animate__animated animate__pulse">Register</button>
+      </form>
+      <div class="text-center mt-3 animate__animated animate__fadeInUp">
+        <small>Already have an account? <a href="{{ url_for('login') }}" class="fw-bold text-primary">Login</a></small>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        {{ form.email(class="form-control") }}
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Password</label>
-        {{ form.password(class="form-control") }}
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Register</button>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}
