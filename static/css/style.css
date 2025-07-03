@@ -18,8 +18,8 @@ table td {
 
 .footer {
   flex-shrink: 0;
-  background: #222;
-  color: #fff;
+  background: hsl(0, 0%, 13%);
+  color: hsl(0, 0%, 100%);
   text-align: center;
   padding: 15px 0;
   width: 100%;
@@ -31,7 +31,7 @@ table td {
 
 /* Animation CSS for index.html */
 .bg-overlay {
-  background: linear-gradient(120deg, rgba(7, 24, 82, 0.75), rgba(49, 180, 210, 0.65)),
+  background: linear-gradient(120deg, hsla(226, 84%, 17%, 0.75), hsla(191, 64%, 51%, 0.65)),
               url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
@@ -44,21 +44,21 @@ table td {
 .title-glow {
   font-weight: 900;
   letter-spacing: 2px;
-  color: #fff;
-  text-shadow: 0 0 8px #18e0fb, 0 0 32px #185cfa, 0 4px 16px #0005;
+  color: hsl(78, 57%, 5%);
+  text-shadow: 0 0 8px hsl(187, 97%, 54%), 0 0 32px hsl(222, 96%, 54%), 0 4px 16px hsla(0, 0%, 0%, 0.333);
   animation: glow 2s ease-in-out infinite alternate;
 }
 
 /* Glow animation */
 @keyframes glow {
-  from { text-shadow: 0 0 8px #18e0fb, 0 0 32px #185cfa, 0 4px 16px #0005; }
-  to   { text-shadow: 0 0 24px #18e0fb, 0 0 64px #185cfa, 0 8px 32px #0007; }
+  from { text-shadow: 0 0 8px hsl(187, 97%, 54%), 0 0 32px hsl(222, 96%, 54%), 0 4px 16px hsla(0, 0%, 0%, 0.333); }
+  to   { text-shadow: 0 0 24px hsl(187, 97%, 54%), 0 0 64px hsl(222, 96%, 54%), 0 8px 32px hsla(0, 0%, 0%, 0.467); }
 }
 
 .card {
-  background: rgba(255,255,255,0.90);
+  background: hsla(0, 0%, 100%, 0.9);
   border-radius: 1.5rem;
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.22);
+  box-shadow: 0 8px 32px 0 hsla(236, 63%, 33%, 0.22);
   backdrop-filter: blur(4px);
 }
 
@@ -66,8 +66,8 @@ table td {
   transition: box-shadow 0.3s, border 0.3s;
 }
 .file-input:focus {
-  border-color: #18e0fb;
-  box-shadow: 0 0 8px #18e0fb44;
+  border-color: hsl(187, 97%, 54%);
+  box-shadow: 0 0 8px hsla(187, 97%, 54%, 0.267);
 }
 
 /* Animate.css fallback for card if not imported */

@@ -14,25 +14,58 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData();
             formData.append('document', fileInput.files[0]);
             const resultDiv = document.getElementById('analysisResult');
-            resultDiv.innerHTML = 'Analyzing...';
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+
+            // Reset and show progress bar
+            progressBar.style.width = '0%';
+            progressBar.setAttribute('aria-valuenow', 0);
+            progressBar.textContent = '0%';
+            progressContainer.style.display = 'block';
+            resultDiv.innerHTML = '';
+
+            // Simulate progress bar animation
+            let progress = 0;
+            let fakeInterval = setInterval(() => {
+                progress += Math.random() * 12 + 5; // Increment randomly for realism
+                if (progress >= 100) progress = 98; // Keep under 100 until fetch completes
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', Math.floor(progress));
+                progressBar.textContent = Math.floor(progress) + '%';
+            }, 250);
+
             fetch('/analyze', {
                 method: 'POST',
                 body: formData
             })
             .then(res => res.json())
             .then(data => {
-                if (data.error) {
-                    resultDiv.innerHTML = `<span style="color: red;">Error: ${data.error}</span>`;
-                } else {
-                    let html = `<strong>Risk Score:</strong> ${data.risk_score}%<br><strong>Highlights:</strong><ul>`;
-                    data.highlights.forEach(line => {
-                        html += `<li>${line}</li>`;
-                    });
-                    html += '</ul>';
-                    resultDiv.innerHTML = html;
-                }
+                clearInterval(fakeInterval);
+                progressBar.style.width = '100%';
+                progressBar.setAttribute('aria-valuenow', 100);
+                progressBar.textContent = '100%';
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    if (data.error) {
+                        resultDiv.innerHTML = `<span style="color: red;">Error: ${data.error}</span>`;
+                    } else {
+                        let html = `<strong>Risk Score:</strong> ${data.risk_score}%<br><strong>Highlights:</strong><ul>`;
+                        data.highlights.forEach(line => {
+                            html += `<li>${line}</li>`;
+                        });
+                        html += '</ul>';
+                        resultDiv.innerHTML = html;
+                    }
+                }, 400); // Short pause for effect
             }).catch(() => {
-                resultDiv.innerHTML = "<span style='color:red;'>Analysis failed. Please try again.</span>";
+                clearInterval(fakeInterval);
+                progressBar.style.width = '100%';
+                progressBar.setAttribute('aria-valuenow', 100);
+                progressBar.textContent = '100%';
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    resultDiv.innerHTML = "<span style='color:red;'>Analysis failed. Please try again.</span>";
+                }, 400);
             });
         });
     }
