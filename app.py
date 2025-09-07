@@ -6,8 +6,8 @@ from wtforms.validators import InputRequired, Email, Length, EqualTo
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
-from models.models import User, db, AnalysisLog
-from ml.analyzer import analyze_document
+from server.server import User, db, AnalysisLog
+from models.analyzer import analyze_document
 from config import Config
 from flask_dance.contrib.google import make_google_blueprint, google
 from sqlalchemy.exc import IntegrityError
@@ -72,9 +72,14 @@ def register():
     email = form.email.data.strip().lower()
     user = User(username=form.username.data, email=email, password=hash_password)
     db.session.add(user)
-    db.session.commit()
-    flash("Registration successful. Please log in.")
-    return redirect(url_for("login"))
+    try:
+      db.session.commit()
+      flash("Registration successful. Please log in.")
+      return redirect(url_for("login"))
+    except IntegrityError:
+      db.session.rollback()
+      flash("Email or username already exists. Please use a different one.")
+      return render_template("register.html", form=form)
   elif request.method == "POST":
     flash("Form validation failed.Please try again.")
     print("Register form errors:", form.errors)
