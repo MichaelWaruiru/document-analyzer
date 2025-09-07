@@ -74,14 +74,14 @@ def register():
     db.session.add(user)
     try:
       db.session.commit()
-      flash("Registration successful. Please log in.")
+      flash("Registration successful. Please log in.", "success")
       return redirect(url_for("login"))
     except IntegrityError:
       db.session.rollback()
-      flash("Email or username already exists. Please use a different one.")
+      flash("Email or username already exists. Please use a different one.", "danger")
       return render_template("register.html", form=form)
   elif request.method == "POST":
-    flash("Form validation failed.Please try again.")
+    flash("Form validation failed.Please try again.", "danger")
     print("Register form errors:", form.errors)
   return render_template("register.html", form=form)
 
@@ -96,9 +96,9 @@ def login():
     if user and check_password_hash(user.password, form.password.data):
       login_user(user)
       return redirect(url_for("index"))
-    flash("Invalid credentials. Check email and password.")
+    flash("Invalid credentials. Check email and password.", "danger")
   elif request.method == "POST":
-    flash("Form validation failed. Please try again.")
+    flash("Form validation failed. Please try again.", "danger")
     print("Login form errors:", form.errors)
   return render_template("login.html", form=form)
 
@@ -243,7 +243,7 @@ def delete_log(log_id):
 @login_required
 def admin():
   if not current_user.is_admin:
-    flash("Admin only!")
+    flash("Admin only!", "warning")
     return redirect(url_for("dashboard"))
   users = User.query.all()
   analyses = AnalysisLog.query.order_by(AnalysisLog.upload_time.desc()).all()
