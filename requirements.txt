@@ -11,3 +11,5 @@ pandas
 nltk
 email_validator
 Flask-Dance
+python-docx
+PyPDF2
