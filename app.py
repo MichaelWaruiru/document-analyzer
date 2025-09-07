@@ -213,7 +213,7 @@ def analyze():
       )
       db.session.add(log)
       db.session.commit()
-  # For anonymous users, just return the result (don't try to access current_user.id)
+  # For anonymous users, return the result (don't try to access current_user.id)
   return jsonify(result)
 
 @app.route("/delete-log/<int:log_id>", methods=["POST"])
@@ -233,7 +233,7 @@ def delete_log(log_id):
     flash("Invalid CSRF token or form submission.", "danger")
     return redirect(url_for("dashboard"))
 
-"""Optional--> Route for admin"""
+"""Route for admin"""
 @app.route("/admin")
 @login_required
 def admin():
