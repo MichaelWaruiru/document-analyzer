@@ -113,7 +113,7 @@ Document Analyzer is a Flask-based web application that allows users to upload l
    ```bash
    flask run
    ```
-   - The app will be available at `http://localhost:5000`
+   - The app will be available at `http://127.0.0.1:5000`
 
 ## Usage
 
