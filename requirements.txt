@@ -8,7 +8,6 @@ python-dotenv
 spacy
 scikit-learn
 pandas
-nltk
 email_validator
 Flask-Dance
 python-docx
