@@ -12,3 +12,4 @@ email_validator
 Flask-Dance
 python-docx
 PyPDF2
+gunicorn
