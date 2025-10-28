@@ -13,3 +13,4 @@ Flask-Dance
 python-docx
 PyPDF2
 gunicorn
+psycopg2-binary
