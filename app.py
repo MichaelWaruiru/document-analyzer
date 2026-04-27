@@ -17,7 +17,7 @@ UPLOAD_PATH = 'static/uploads'
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.app_context().push()
+# app.app_context().push()
 db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
